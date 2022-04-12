@@ -34,12 +34,12 @@
 	function login(){
 		var account=$.trim($("#account").val());
 		var password=$.trim($("#password").val());
-        alert("1");
+
 		if(account=="" || password==""){
 			$("#msg").html("账号和密码不能为空！")
 			return false;
 		}
-		alert("2");
+
 		//ajax异步请求执行登录操作
 		/*xml=new XMLHttpRequest();
 		xml.onreadystatechange=function (){
@@ -60,11 +60,9 @@
 			},
 			dataType : "json",
 			success : function (data){
-				alert(data)
 				if(data.success){
 					// ture 登录成功 跳转下一页面
-					alert("登录成功")
-					window.location.href="workbench/index.html";
+					window.location.href="workbench/index.jsp";
 				}else {
 					//登录失败 在密码框下方显示登录失败的原因
 					$("#msg").html(data.arg);
@@ -87,7 +85,7 @@
 			<div class="page-header">
 				<h1>登录</h1>
 			</div>
-			<form action="workbench/index.html" class="form-horizontal" role="form">
+			<form action="workbench/index.jsp" class="form-horizontal" role="form">
 				<div class="form-group form-group-lg">
 					<div style="width: 350px;">
 						<input class="form-control" type="text" placeholder="用户名" id="account">
