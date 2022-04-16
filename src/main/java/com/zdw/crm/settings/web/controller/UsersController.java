@@ -1,6 +1,5 @@
 package com.zdw.crm.settings.web.controller;
 
-import com.zdw.crm.exception.LoginException;
 import com.zdw.crm.settings.domain.Users;
 import com.zdw.crm.settings.service.UsersService;
 import com.zdw.crm.settings.service.impl.UsersServiceImpl;
@@ -12,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +31,7 @@ public class UsersController extends HttpServlet {
     private void logins(HttpServletRequest request, HttpServletResponse response)
            {
                //过滤响应流响应中文乱码
-               response.setContentType("text/html;charset=utf-8");
+               //response.setContentType("text/html;charset=utf-8");
 
         String account = request.getParameter("account");
         String password = request.getParameter("password");

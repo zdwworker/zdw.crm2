@@ -8,6 +8,7 @@ import com.zdw.crm.utils.DateTimeUtil;
 import com.zdw.crm.utils.SqlSessionUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UsersServiceImpl implements UsersService {
@@ -18,7 +19,7 @@ public class UsersServiceImpl implements UsersService {
             throws LoginException {
         Map<String,String> map =new HashMap<String,String>();
         map.put("account",account);
-        System.out.println("8");
+
         map.put("passwordmd5",passwordmd5);
         Users users= usersDao.logins(map);
         if(users==null){
@@ -49,5 +50,12 @@ public class UsersServiceImpl implements UsersService {
         }
 
         return users;
+    }
+
+    @Override
+    public List<Users> getUsersList() {
+       /* UsersDao usersDao = SqlSessionUtil.getSqlSession().getMapper(UsersDao.class);*/
+        List<Users> uList=usersDao.getUsersList();
+        return uList;
     }
 }

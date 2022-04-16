@@ -5,11 +5,11 @@
 
 <mapper namespace="com.zdw.crm.settings.dao.UsersDao">
 
-    <!--<select id="getUserList" resultType="User">
+    <select id="getUsersList" resultType="Users">
 
-        select * from tbl_user
+        select * from tbl_users
 
-    </select>-->
+    </select>
 
     <select id="logins" resultType="Users">
 

@@ -9,7 +9,7 @@
     <typeAliases>
 
         <package name="com.zdw.crm.settings.domain"/>
-       <!-- <package name="com.bjpowernode.crm.workbench.domain"/>-->
+        <package name="com.zdw.crm.workbench.domain"/>
 
 
     </typeAliases>
@@ -30,7 +30,7 @@
     <mappers>
 
         <package name="com.zdw.crm.settings.dao"/>
-        <!--<package name="com.zdw.crm.workbench.dao"/>-->
+        <package name="com.zdw.crm.workbench.dao"/>
 
     </mappers>
 </configuration>
