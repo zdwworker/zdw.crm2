@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zdw.crm.workbench.dao.ClueDao">
+
+    <delete id="delbyClueId">
+        delete from tbl_clue where id=#{clueId}
+    </delete>
+
+    <select id="getCluebyClueId" resultType="Clue">
+        select
+            u.name as owner,
+            c.company,
+            c.appellation,
+            c.fullname ,
+            c.job ,
+            c.email ,
+            c.phone,
+            c.website,
+            c.mphone,
+            c.state,
+            c.source,
+            c.description,
+            c.contactSummary ,
+            c.nextContactTime,
+            c.address,
+            c.id ,
+            c.createBy,
+            c.createTime,
+            c.editBy,
+            c.editTime
+        from
+            tbl_clue c
+                join tbl_users u
+                     on c.owner=u.id
+        where c.id=#{clueId}
+    </select>
+
+    <select id="getClue" resultType="Clue">
+        select
+            u.name as owner,
+            c.company,
+            c.appellation,
+            c.fullname ,
+            c.job ,
+            c.email ,
+            c.phone,
+            c.website,
+            c.mphone,
+            c.state,
+            c.source,
+            c.description,
+            c.contactSummary ,
+            c.nextContactTime,
+            c.address,
+            c.id ,
+            c.createBy,
+            c.createTime,
+            c.editBy,
+            c.editTime
+        from
+            tbl_clue c
+        join tbl_users u
+        on c.owner=u.id
+    </select>
+    <insert id="savaClue" >
+        insert into tbl_clue
+            (owner ,
+            company,
+            appellation,
+            fullname ,
+            job ,
+            email ,
+            phone,
+            website,
+            mphone,
+            state,
+            source,
+            description,
+            contactSummary ,
+            nextContactTime,
+            address,
+            id ,
+            createBy,
+            createTime)
+        values (
+            #{owner},
+            #{company},
+            #{appellation},
+            #{fullname},
+            #{job},
+            #{email},
+            #{phone},
+            #{website},
+            #{mphone},
+            #{state},
+            #{source},
+            #{description},
+            #{contactSummary},
+            #{nextContactTime},
+            #{address},
+            #{id},
+            #{createBy},
+            #{createTime}
+        )
+    </insert>
+
+    <select id="getDetail" resultType="Clue">
+        select
+            u.name as owner,
+            c.company,
+            c.appellation,
+            c.fullname ,
+            c.job ,
+            c.email ,
+            c.phone,
+            c.website,
+            c.mphone,
+            c.state,
+            c.source,
+            c.description,
+            c.contactSummary ,
+            c.nextContactTime,
+            c.address,
+            c.id ,
+            c.createBy,
+            c.createTime,
+            c.editBy,
+            c.editTime
+        from
+            tbl_clue c
+                join tbl_users u
+                     on c.owner=u.id
+        where c.id=#{id}
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

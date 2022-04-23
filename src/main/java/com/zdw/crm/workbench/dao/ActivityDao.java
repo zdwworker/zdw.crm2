@@ -22,4 +22,10 @@ public interface ActivityDao {
     int updataActivity(Map<String, String> map);
 
     int delDetailActivity(String id);
+
+    Activity getActivity(String id);
+
+    List<Activity> seachactivity(Map<String,String> map);
+
+    List<Activity> getActivityListByName(String name);
 }

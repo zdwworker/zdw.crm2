@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zdw.crm.workbench.dao.ClueActivityRelationDao">
+
+    <delete id="delbyClueId">
+        delete from tbl_clue_activity_relation where clueId=#{clueId}
+    </delete>
+
+    <insert id="relevance">
+        insert  tbl_clue_activity_relation(id,clueId,activityId)
+        values (#{id},#{clueId},#{activityId})
+
+    </insert>
+
+    <delete id="delRelation">
+        delete from tbl_clue_activity_relation
+        where
+              activityId=#{activityId} and clueId=#{clueId}
+    </delete>
+
+    <select id="getActivityId" resultType="String">
+        select activityId
+        from tbl_clue_activity_relation
+        where clueId=#{clueId}
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

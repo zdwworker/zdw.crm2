@@ -4,6 +4,49 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zdw.crm.workbench.dao.ActivityDao">
 
+    <select id="getActivityListByName" resultType="Activity">
+        select
+            a.id,
+            a.name,
+            a.startDate,
+            a.endDate,
+            u.name as owner
+        from tbl_activity a
+                 join tbl_users u
+                      on u.id=a.owner
+        where a.name like '%' #{name} '%'
+    </select>
+
+    <select id="seachactivity" resultType="Activity">
+        select
+            a.id,
+            a.name,
+            a.startDate,
+            a.endDate,
+            u.name as owner
+        from tbl_activity a
+                 join tbl_users u
+                      on u.id=a.owner
+        where a.name like '%' #{name} '%' and a.id not in(
+            select
+               activityId
+        from tbl_clue_activity_relation
+        where clueId=#{clueId}
+        )
+    </select>
+
+    <select id="getActivity" resultType="Activity">
+        select
+               a.id,
+               a.name,
+               a.startDate,
+               a.endDate,
+               u.name as owner
+        from tbl_activity a
+        join tbl_users u
+        on u.id=a.owner
+        where a.id=#{id}
+    </select>
     <update id="updataActivity" >
         update
              tbl_activity

@@ -20,4 +20,10 @@ public interface ActivityService {
     boolean updataActivity(Map<String, String> map);
 
     Boolean delDetailActivity(String id);
+
+    List<Activity> getActivity(List<String> lists);
+
+    List<Activity> seachactivity(Map<String, String> map);
+
+    List<Activity> getActivityListByName(String name);
 }

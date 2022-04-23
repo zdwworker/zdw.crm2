@@ -1,24 +1,129 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 	request.getServerPort() + request.getContextPath() + "/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
+	<base href="<%=basePath%>">
 <meta charset="UTF-8">
 
-<link href="../../jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-<link href="../../jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
+<link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
 
-<script type="text/javascript" src="../../jquery/jquery-1.11.1-min.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
+<script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 
 <script type="text/javascript">
 
 	$(function(){
-		
-		
-		
+		//马上刷新线索
+		showClue();
+
+
+		//打开创建线索的模态窗口后，动态生成所有者
+		$("#create-btn").click(function (){
+			var html="";
+			$.ajax({
+				url : "workbench/clue/getuser.do",
+				dataType : "json",
+				type:"get",
+				success : function (data) {
+					$.each(data,function (i,n){
+					html+=	"<option value='"+n.id+"'>"+n.name+"</option>";
+					})
+
+					$("#create-clueOwner").html(html)
+					//将默认选中为登录账户的名字
+					var id = "${users.id}";
+					$("#create-clueOwner").val(id);
+				}
+			})
+			$("#createClueModal").modal("show");
+		})
+
+		//点击保存按钮，保存新建线索信息
+		$("#create-sava").click(function (){
+			var owner=$("#create-clueOwner").val();
+			var company=$("#create-company").val();
+			var appellation=$("#create-appellation").val();
+			var fullname=$("#create-fullname").val();
+			var job=$("#create-job").val();
+			var email=$("#create-email").val();
+			var phone=$("#create-phone").val();
+			var website=$("#create-website").val();
+			var mphone=$("#create-mphone").val();
+			var state=$("#create-state").val();
+			var source=$("#create-source").val();
+			var description=$("#create-description").val();
+			var contactSummary=$("#create-contactSummary").val();
+			var nextContactTime=$("#create-nextContactTime").val();
+			var address=$("#create-address").val();
+			$.ajax({
+				url : "workbench/clue/savaClue.do",
+				data : {
+					"owner":owner,
+					"company":company,
+					"appellation":appellation,
+					"fullname":fullname,
+					"job":job,
+					"email":email,
+					"phone":phone,
+					"website":website,
+					"mphone":mphone,
+					"state":state,
+					"source":source,
+					"description":description,
+					"contactSummary":contactSummary,
+					"nextContactTime":nextContactTime,
+					"address":address
+				},
+				type : "post",
+				dataType : "json",
+				success : function (data) {
+						if(data.success){
+							alert("保存成功！");
+							showClue();
+							$("#createClueModal").modal("hide");
+						}else {
+							alert("保存失败！")
+						}
+
+
+				}
+
+			})
+		})
 	});
-	
+	//更新所有线索的方法
+	 function showClue(){
+	 	var html="";
+		 $.ajax({
+			 url : "workbench/clue/getClue.do",
+			 type : "get",
+			 dataType : "json",
+			 success : function (data) {
+				$.each(data,function (i,n){
+					 html+='   <tr> ';
+					html+='	<td><input type="checkbox" /></td> ';
+					html+='	<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/clue/getdetail.do?id='+n.id+'\';">'+n.fullname+n.appellation+'</a></td> ';
+					html+='	<td>'+n.company+'</td> ';
+					html+='	<td>'+n.phone+'</td> ';
+					html+='	<td>'+n.mphone+'</td> ';
+					html+='	<td>'+n.source+'</td> ';
+					html+='	<td>'+n.owner+'</td> ';
+					html+='	<td>'+n.state+'</td> ';
+					 html+='   </tr> ';
+				})
+				 $("#search-clue").html(html);
+			 }
+		 })
+
+
+	 }
 </script>
 </head>
 <body>
@@ -40,9 +145,9 @@
 							<label for="create-clueOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-clueOwner">
-								  <option>zhangsan</option>
+								  <%--<option>zhangsan</option>
 								  <option>lisi</option>
-								  <option>wangwu</option>
+								  <option>wangwu</option>--%>
 								</select>
 							</div>
 							<label for="create-company" class="col-sm-2 control-label">公司<span style="font-size: 15px; color: red;">*</span></label>
@@ -52,20 +157,23 @@
 						</div>
 						
 						<div class="form-group">
-							<label for="create-call" class="col-sm-2 control-label">称呼</label>
+							<label for="create-appellation" class="col-sm-2 control-appellation">称呼</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-call">
+								<select class="form-control" id="create-appellation">
 								  <option></option>
-								  <option>先生</option>
-								  <option>夫人</option>
+								  <%--<option>先生sasasas</option>
+								  <option>夫人dasdsd</option>
 								  <option>女士</option>
 								  <option>博士</option>
-								  <option>教授</option>
+								  <option>教授</option>--%>
+									<c:forEach items="${appellation}" var="a">
+										<option value="${a.value}">${a.text}</option>
+									</c:forEach>
 								</select>
 							</div>
-							<label for="create-surname" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
+							<label for="create-fullname" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-surname">
+								<input type="text" class="form-control" id="create-fullname">
 							</div>
 						</div>
 						
@@ -96,27 +204,30 @@
 							<div class="col-sm-10" style="width: 300px;">
 								<input type="text" class="form-control" id="create-mphone">
 							</div>
-							<label for="create-status" class="col-sm-2 control-label">线索状态</label>
+							<label for="create-state" class="col-sm-2 control-label">线索状态</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-status">
+								<select class="form-control" id="create-state">
 								  <option></option>
-								  <option>试图联系</option>
+								  <%--<option>试图联系</option>
 								  <option>将来联系</option>
 								  <option>已联系</option>
 								  <option>虚假线索</option>
 								  <option>丢失线索</option>
 								  <option>未联系</option>
-								  <option>需要条件</option>
+								  <option>需要条件</option>--%>
+									<c:forEach items="${clueState}" var="c">
+										<option value="${c.value}">${c.text}</option>
+									</c:forEach>
 								</select>
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="create-source" class="col-sm-2 control-label">线索来源</label>
+							<label for="create-source" class="col-sm-2 control-source">线索来源</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-source">
 								  <option></option>
-								  <option>广告</option>
+								  <%--<option>广告</option>
 								  <option>推销电话</option>
 								  <option>员工介绍</option>
 								  <option>外部介绍</option>
@@ -129,16 +240,19 @@
 								  <option>交易会</option>
 								  <option>web下载</option>
 								  <option>web调研</option>
-								  <option>聊天</option>
+								  <option>聊天</option>--%>
+									<c:forEach items="${source}" var="s">
+										<option value="${s.value}">${s.text}</option>
+									</c:forEach>
 								</select>
 							</div>
 						</div>
 						
 
 						<div class="form-group">
-							<label for="create-describe" class="col-sm-2 control-label">线索描述</label>
+							<label for="create-description" class="col-sm-2 control-label">线索描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="create-describe"></textarea>
+								<textarea class="form-control" rows="3" id="create-description"></textarea>
 							</div>
 						</div>
 						
@@ -174,7 +288,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button type="button" class="btn btn-primary" id="create-sava" <%--data-dismiss="modal"--%>>保存</button>
 				</div>
 			</div>
 		</div>
@@ -438,7 +552,7 @@
 			</div>
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 40px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
-				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createClueModal"><span class="glyphicon glyphicon-plus"></span> 创建</button>
+				  <button type="button" class="btn btn-primary" id="create-btn" <%--data-toggle="modal" data-target="#createClueModal"--%>><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editClueModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
@@ -459,8 +573,8 @@
 							<td>线索状态</td>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
+					<tbody id="search-clue">
+						<%--<tr>
 							<td><input type="checkbox" /></td>
 							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">李四先生</a></td>
 							<td>动力节点</td>
@@ -469,8 +583,8 @@
 							<td>广告</td>
 							<td>zhangsan</td>
 							<td>已联系</td>
-						</tr>
-                        <tr class="active">
+						</tr>--%>
+                       <%-- <tr class="active">
                             <td><input type="checkbox" /></td>
                             <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">李四先生</a></td>
                             <td>动力节点</td>
@@ -479,7 +593,7 @@
                             <td>广告</td>
                             <td>zhangsan</td>
                             <td>已联系</td>
-                        </tr>
+                        </tr>--%>
 					</tbody>
 				</table>
 			</div>

@@ -196,8 +196,19 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             $("#remark").val("");
             showRemar();
         })
+        //点击取消按钮   情况内容框
+        $("#cancelBtn").click(function (){
+            $("#remark").val("");
+        })
+
+        /*$("#remark").keydown(function (even){
+            if(even.keyCode==13){
+
+            }
+        })*/
 
 	});
+
 
     function showRemar(){
 
